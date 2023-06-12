@@ -12,8 +12,8 @@ defmodule Bananex.Fruits.InsertSingle2 do
 
     number_of_fruits
     |> Stream.map(fn x -> %{name: "fruit #{x}"} end)
-    |> Stream.chunk_every(65535)
-    |> Task.async_stream(fn chunck -> Repo.insert_all(Fruit, chunck) end)
+    |> Stream.chunk_every(8191)
+    |> Task.async_stream(fn chunck -> Repo.insert_all(Fruit, chunck) end, max_concunrrency: 8)
     |> Stream.run()
   end
 end
