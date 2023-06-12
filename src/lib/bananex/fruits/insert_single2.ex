@@ -1,4 +1,5 @@
 defmodule Bananex.Fruits.InsertSingle2 do
+  alias Mix.Tasks
   alias Bananex.Fruits.Fruit
   alias Bananex.Repo
 
@@ -12,17 +13,7 @@ defmodule Bananex.Fruits.InsertSingle2 do
     number_of_fruits
     |> Stream.map(fn x -> %{name: "fruit #{x}"} end)
     |> Stream.chunk_every(65535)
-    |> Enum.each(fn chunck -> Repo.insert_all(Fruit, chunck) end)
-
-    # Enum.each(1..15, fn _ ->
-    #   number_of_fruits = 1..65535
-
-    #   records =
-    #     Enum.map(number_of_fruits, fn x ->
-    #       %{name: "fruit #{x}"}
-    #     end)
-
-    #   Repo.insert_all(Fruit, records)
-    # end)
+    |> Task.async_stream(fn chunck -> Repo.insert_all(Fruit, chunck) end)
+    |> Stream.run()
   end
 end
