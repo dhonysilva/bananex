@@ -13,10 +13,12 @@ defmodule Bananex.MyQueue do
     {:reply, nil, []}
   end
 
+  # Processar de forma síncrona
   def handle_call(:queue, _from, state) do
     {:reply, state, state}
   end
 
+  # Processar de forma assíncrona
   def handle_cast({:enqueue, value}, state) do
     {:noreply, state ++ [value]}
   end
