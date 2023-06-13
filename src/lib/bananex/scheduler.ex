@@ -8,7 +8,7 @@ defmodule Bananex.Scheduler do
   # Server
   def init(state) do
     Logger.info("Insert fruits started.")
-    InsertSingle2.call()
+    # InsertSingle2.call()
 
     schedule_event()
 
